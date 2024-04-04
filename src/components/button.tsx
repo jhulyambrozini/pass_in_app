@@ -1,4 +1,3 @@
-import { isLoading } from 'expo-font';
 import {
   TouchableOpacity,
   Text,
