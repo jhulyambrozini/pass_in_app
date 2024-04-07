@@ -4,8 +4,8 @@ import { Alert } from 'react-native';
 import { useBadgeStore } from '@/infra/store/badge-store';
 
 export function useTicketViewModel() {
-  const [image, setImage] = useState('');
   const [expandQRCode, setExpandQRCode] = useState(false);
+  const { updateAvatar, remove } = useBadgeStore();
 
   async function handleSelectImage() {
     try {
@@ -16,7 +16,8 @@ export function useTicketViewModel() {
       });
 
       if (result.assets) {
-        setImage(result.assets[0].uri);
+        updateAvatar(result.assets[0].uri);
+        // setImage(result.assets[0].uri);
       }
     } catch (e) {
       console.log(e);
@@ -24,13 +25,14 @@ export function useTicketViewModel() {
     }
   }
 
-  
+  function logout() {
+    remove();
+  }
 
   return {
     handleSelectImage,
     setExpandQRCode,
-
-    image,
     expandQRCode,
+    logout,
   };
 }

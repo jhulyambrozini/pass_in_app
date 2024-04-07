@@ -7,6 +7,7 @@ type StateProps = {
   badge: BadgeModel | null;
   save: (badge: BadgeModel) => void;
   remove: () => void;
+  updateAvatar: (uri: string) => void;
 };
 
 export const useBadgeStore = create(
@@ -15,6 +16,10 @@ export const useBadgeStore = create(
       badge: null,
       save: (badge: BadgeModel) => set(() => ({ badge })),
       remove: () => set(() => ({ badge: null })),
+      updateAvatar: (uri: string) =>
+        set(state => ({
+          badge: state.badge ? { ...state.badge, image: uri } : state.badge,
+        })),
     }),
     {
       name: 'nlw-unite: badge',

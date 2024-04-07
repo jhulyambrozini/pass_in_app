@@ -8,17 +8,18 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { QRCode } from './qrcode';
+import { BadgeModel } from '@/models/badge-model';
 
 type CredentialProps = {
   onchangeAvatar: () => void;
   onExpandeQRCode?: () => void;
-  image?: string;
+  data: BadgeModel;
 };
 
 export function Credential({
   onchangeAvatar,
-  image,
   onExpandeQRCode,
+  data,
 }: CredentialProps) {
   return (
     <View className="w-full self-stretch items-center">
@@ -33,16 +34,20 @@ export function Credential({
           className="px-6 py-8 h-40 items-center self-stretch border-b border-white/10 overflow-hidden"
         >
           <View className="w-full flex-row items-center justify-between">
-            <Text className="text-zinc-50 text-sm font-bold">Unite Summer</Text>
-            <Text className="text-zinc-50 text-sm font-bold">#123</Text>
+            <Text className="text-zinc-50 text-sm font-bold">
+              {data.eventTitle}
+            </Text>
+            <Text className="text-zinc-50 text-sm font-bold">
+              #{`${data.id}`}
+            </Text>
           </View>
           <View className="w-40 h-40 bg-black rounded-full" />
         </ImageBackground>
 
-        {image ? (
+        {data.image ? (
           <TouchableOpacity activeOpacity={0.7} onPress={onchangeAvatar}>
             <Image
-              source={{ uri: image }}
+              source={{ uri: data.image }}
               className="w-36 h-36 rounded-full -mt-24"
             />
           </TouchableOpacity>
@@ -57,13 +62,13 @@ export function Credential({
         )}
 
         <Text className="font-bold text-2xl text-zinc-50 mt-4">
-          Jhuly ambrozini
+          {data.name}
         </Text>
         <Text className="font-regular text-base text-zinc-300 mb-4">
-          jhuly@email.com
+          {data.email}
         </Text>
 
-        <QRCode value="TESANDO" size={120} />
+        <QRCode value={data.checkinUrl} size={120} />
 
         <TouchableOpacity
           activeOpacity={0.7}

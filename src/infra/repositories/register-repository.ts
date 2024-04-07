@@ -7,7 +7,7 @@ type registerDTO = {
 
 export async function registerRepository({ name, email }: registerDTO) {
   const response = await httpClient.post(
-    `/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees`,
+    `/events/${process.env.API_EVENT_ID}/attendees`,
     {
       name,
       email,

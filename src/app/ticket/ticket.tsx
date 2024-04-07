@@ -18,17 +18,19 @@ import { QRCode } from '@/components/qrcode';
 
 import { colors } from '@/styles/colors';
 import { useTicketViewModel } from './ticket-viewmodel';
-import { useBadgeStore } from '@/infra/store/badge-store';
 import { Redirect } from 'expo-router';
+import { useBadgeStore } from '@/infra/store/badge-store';
 
 export default function Ticket() {
-  const { expandQRCode, handleSelectImage, image, setExpandQRCode } =
+  const { expandQRCode, handleSelectImage, setExpandQRCode, logout } =
     useTicketViewModel();
-  const { remove, badge } = useBadgeStore();
+
+  const { badge } = useBadgeStore();
 
   if (!badge?.checkinUrl) {
     return <Redirect href="/" />;
   }
+
   return (
     <View className="flex-1 bg-green-500">
       <StatusBar barStyle="light-content" />
@@ -41,8 +43,8 @@ export default function Ticket() {
       >
         <Credential
           onchangeAvatar={handleSelectImage}
-          image={image}
           onExpandeQRCode={() => setExpandQRCode(true)}
+          data={badge}
         />
 
         <FontAwesome
@@ -55,16 +57,15 @@ export default function Ticket() {
           Compartilhar credencial
         </Text>
         <Text className="text-white font-regular text-base mt-1 mb-6">
-          Mostre ao mundo que você vai participar do evento Unite Summer!
+          Mostre ao mundo que você vai participar do evento {badge.eventTitle}!
         </Text>
         <Button title="Compartilhar" />
         <TouchableOpacity
           activeOpacity={0.7}
           className="mt-10"
-          onPress={remove}
+          onPress={logout}
         >
           <Text className="text-base text-white font-bold text-center">
-            {' '}
             Remover Ingresso
           </Text>
         </TouchableOpacity>
