@@ -1,4 +1,4 @@
-import { httpClient } from '../http-client';
+import { httpClient } from '../utils/http-client';
 
 type registerDTO = {
   email: string;

@@ -1,10 +1,14 @@
-import { Image, StatusBar, View } from 'react-native';
-import { Input } from '@/components/input';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors } from '@/styles/colors';
-import { Button } from '@/components/button';
 import { Link, Redirect } from 'expo-router';
+import { Image, StatusBar, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { Input } from '@/components/input';
+import { Button } from '@/components/button';
+
 import { useIndexViewModel } from './index-viewmodel';
+
+import { colors } from '@/styles/colors';
+
 import { useBadgeStore } from '@/infra/store/badge-store';
 
 export default function Index() {

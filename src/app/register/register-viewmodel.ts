@@ -1,10 +1,11 @@
-import { getAttendeeBadgeRepository } from '@/infra/repositories/attendee-badge-repository';
-import { registerRepository } from '@/infra/repositories/register-repository';
-import { useBadgeStore } from '@/infra/store/badge-store';
-import axios from 'axios';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert } from 'react-native';
+import axios from 'axios';
+
+import { getAttendeeBadgeRepository } from '@/infra/repositories/attendee-badge-repository';
+import { registerRepository } from '@/infra/repositories/register-repository';
+import { useBadgeStore } from '@/infra/store/badge-store';
 
 export function useRegisterViewModel() {
   const [name, setName] = useState('');
@@ -20,15 +21,22 @@ export function useRegisterViewModel() {
 
       setIsLoading(true);
 
-      const data = await registerRepository({ name, email });
+      const response = await registerRepository({ name, email });
 
-      if (data.attendeeId) {
-        const badgeResponse = await getAttendeeBadgeRepository({
-          code: data.attendeeId,
+      if (response.attendeeId) {
+        const { data } = await getAttendeeBadgeRepository({
+          attendeeId: response.attendeeId,
         });
 
-        save(badgeResponse.data.badge);
+        const dataBadge = {
+          id: response.attendeeId,
+          checkinUrl: data.badge.checkinUrl,
+          email: data.badge.email,
+          name: data.badge.name,
+          eventTitle: data.badge.eventTitle,
+        };
 
+        save(dataBadge);
         Alert.alert('Incrição', 'Incrição realizada com sucesso!', [
           {
             text: 'OK',
@@ -61,9 +69,9 @@ export function useRegisterViewModel() {
   return {
     name,
     email,
+    isLoading,
     setName,
     setEmail,
-    isLoading,
     handlerRegister,
   };
 }

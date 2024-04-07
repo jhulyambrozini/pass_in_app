@@ -1,4 +1,4 @@
-import { httpClient } from '../http-client';
+import { httpClient } from '../utils/http-client';
 
 export async function getAttendeeBadgeRepository({
   attendeeId,

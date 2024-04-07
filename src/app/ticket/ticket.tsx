@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { MotiView } from 'moti';
+import { Redirect } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
-
 import {
   StatusBar,
   View,
   Text,
   ScrollView,
   TouchableOpacity,
-  Alert,
   Modal,
 } from 'react-native';
 
@@ -16,14 +15,20 @@ import { Button } from '@/components/button';
 import { Header } from '@/components/header';
 import { QRCode } from '@/components/qrcode';
 
-import { colors } from '@/styles/colors';
 import { useTicketViewModel } from './ticket-viewmodel';
-import { Redirect } from 'expo-router';
+
+import { colors } from '@/styles/colors';
+
 import { useBadgeStore } from '@/infra/store/badge-store';
 
 export default function Ticket() {
-  const { expandQRCode, handleSelectImage, setExpandQRCode, logout } =
-    useTicketViewModel();
+  const {
+    expandQRCode,
+    handleSelectImage,
+    setExpandQRCode,
+    logout,
+    handlerShare,
+  } = useTicketViewModel();
 
   const { badge } = useBadgeStore();
 
@@ -47,19 +52,29 @@ export default function Ticket() {
           data={badge}
         />
 
-        <FontAwesome
-          name="angle-double-down"
-          size={24}
-          color={colors.gray[300]}
-          className="self-center my-6"
-        />
+        <MotiView
+          from={{ translateY: 0 }}
+          animate={{ translateY: 10 }}
+          transition={{
+            loop: true,
+            type: 'timing',
+            duration: 700,
+          }}
+        >
+          <FontAwesome
+            name="angle-double-down"
+            size={24}
+            color={colors.gray[300]}
+            className="self-center my-6"
+          />
+        </MotiView>
         <Text className="text-white font-bold text-2xl mt-4">
           Compartilhar credencial
         </Text>
         <Text className="text-white font-regular text-base mt-1 mb-6">
           Mostre ao mundo que você vai participar do evento {badge.eventTitle}!
         </Text>
-        <Button title="Compartilhar" />
+        <Button title="Compartilhar" onPress={handlerShare} />
         <TouchableOpacity
           activeOpacity={0.7}
           className="mt-10"

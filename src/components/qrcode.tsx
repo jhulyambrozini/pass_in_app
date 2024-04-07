@@ -1,5 +1,6 @@
-import { colors } from '@/styles/colors';
 import QRCodeSvg from 'react-native-qrcode-svg';
+
+import { colors } from '@/styles/colors';
 
 type QRCodeProps = {
   value: string;

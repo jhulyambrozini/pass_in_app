@@ -1,8 +1,9 @@
+import { useState } from 'react';
+import { router } from 'expo-router';
+import { Alert } from 'react-native';
+
 import { getAttendeeBadgeRepository } from '@/infra/repositories/attendee-badge-repository';
 import { useBadgeStore } from '@/infra/store/badge-store';
-import { router } from 'expo-router';
-import { useState } from 'react';
-import { Alert } from 'react-native';
 
 export function useIndexViewModel() {
   const [code, setCode] = useState('');
