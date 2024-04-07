@@ -1,26 +1,17 @@
-import { Alert, Image, StatusBar, Text, View } from 'react-native';
+import { Image, StatusBar, View } from 'react-native';
+import { Link } from 'expo-router';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+
+import { useRegisterViewModel } from './register-viewmodel';
+
 import { Input } from '@/components/input';
-import {
-  FontAwesome,
-  MaterialCommunityIcons,
-  MaterialIcons,
-} from '@expo/vector-icons';
-import { colors } from '@/styles/colors';
 import { Button } from '@/components/button';
-import { Link, router } from 'expo-router';
-import { useState } from 'react';
+
+import { colors } from '@/styles/colors';
 
 export default function Register() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-
-  function handleRegister() {
-    if (!name.trim() || !email.trim()) {
-      return Alert.alert('inscrição', 'Preencha todos os campos!');
-    }
-
-    router.push('/ticket');
-  }
+  const { handlerRegister, isLoading, setEmail, setName } =
+    useRegisterViewModel();
 
   return (
     <View className="flex-1 bg-green-500 items-center justify-center p-8">
@@ -51,7 +42,11 @@ export default function Register() {
           />
         </Input>
 
-        <Button title="Realizar inscrição" onPress={handleRegister} />
+        <Button
+          title="Realizar inscrição"
+          onPress={handlerRegister}
+          isLoading={isLoading}
+        />
         <Link
           className="text-gray-100 text-base font-bold text-center mt-8"
           href="/"

@@ -1,18 +1,18 @@
-import { Alert, Image, StatusBar, Text, View } from 'react-native';
+import { Image, StatusBar, View } from 'react-native';
 import { Input } from '@/components/input';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
 import { Button } from '@/components/button';
-import { Link } from 'expo-router';
-import { useState } from 'react';
+import { Link, Redirect } from 'expo-router';
+import { useIndexViewModel } from './index-viewmodel';
+import { useBadgeStore } from '@/infra/store/badge-store';
 
 export default function Index() {
-  const [code, setCode] = useState('');
+  const { handleAcessCredential, setCode, isLoading } = useIndexViewModel();
+  const badgeStore = useBadgeStore();
 
-  function handleAcessCredential() {
-    if (!code.trim()) {
-      return Alert.alert('Ingreço', 'Informe o código da credencial');
-    }
+  if (badgeStore.badge?.checkinUrl) {
+    return <Redirect href="/ticket/ticket" />;
   }
 
   return (
@@ -39,10 +39,14 @@ export default function Index() {
           />
         </Input>
 
-        <Button title="Acessar credencial" onPress={handleAcessCredential} />
+        <Button
+          title="Acessar credencial"
+          onPress={handleAcessCredential}
+          isLoading={isLoading}
+        />
         <Link
           className="text-gray-100 text-base font-bold text-center mt-8"
-          href="/register"
+          href="/register/register"
         >
           Ainda não possui ingresso?
         </Link>

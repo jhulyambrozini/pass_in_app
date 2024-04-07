@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
 
 import {
   StatusBar,
@@ -15,31 +14,21 @@ import {
 import { Credential } from '@/components/credential';
 import { Button } from '@/components/button';
 import { Header } from '@/components/header';
-
-import { colors } from '@/styles/colors';
 import { QRCode } from '@/components/qrcode';
 
+import { colors } from '@/styles/colors';
+import { useTicketViewModel } from './ticket-viewmodel';
+import { useBadgeStore } from '@/infra/store/badge-store';
+import { Redirect } from 'expo-router';
+
 export default function Ticket() {
-  const [image, setImage] = useState('');
-  const [expandQRCode, setExpandQRCode] = useState(false);
+  const { expandQRCode, handleSelectImage, image, setExpandQRCode } =
+    useTicketViewModel();
+  const { remove, badge } = useBadgeStore();
 
-  async function handleSelectImage() {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 4],
-      });
-
-      if (result.assets) {
-        setImage(result.assets[0].uri);
-      }
-    } catch (e) {
-      console.log(e);
-      Alert.alert('Foto', 'Não foi possível selecionar a imagem');
-    }
+  if (!badge?.checkinUrl) {
+    return <Redirect href="/" />;
   }
-
   return (
     <View className="flex-1 bg-green-500">
       <StatusBar barStyle="light-content" />
@@ -69,7 +58,11 @@ export default function Ticket() {
           Mostre ao mundo que você vai participar do evento Unite Summer!
         </Text>
         <Button title="Compartilhar" />
-        <TouchableOpacity activeOpacity={0.7} className="mt-10">
+        <TouchableOpacity
+          activeOpacity={0.7}
+          className="mt-10"
+          onPress={remove}
+        >
           <Text className="text-base text-white font-bold text-center">
             {' '}
             Remover Ingresso
